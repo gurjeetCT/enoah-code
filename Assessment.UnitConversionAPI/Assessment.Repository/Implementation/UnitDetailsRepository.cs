@@ -20,7 +20,7 @@ namespace Assessment.Repository.Implementation
         {
             var existingUnit = await _dbContext.UnitDetails.FirstOrDefaultAsync(t => t.UnitName == details.UnitName && t.UnitTypeId == details.UnitTypeId);
             if (existingUnit != null && existingUnit.UnitDetailsId > 0)
-                throw new Exception("Unit already exists");
+                throw new BusinessException("Unit already exists");
 
             var entity = _mapper.Map<UnitDetails>(details);
             await _dbContext.UnitDetails.AddAsync(entity);

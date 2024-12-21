@@ -1,4 +1,5 @@
-﻿namespace Assessment.Models
+﻿
+namespace Assessment.Models
 {
     public class ConversionHistory
     {
@@ -9,6 +10,7 @@
         public string TargetUnitName { get; set; }
         public double DerivedFactor { get; set; }
         public double InputValue { get; set; }
-        public double OutputValue { get; set; }        
+        public double OutputValue { get; set; }
+        public DateTime RecordDate { get; set; }
     }
 }

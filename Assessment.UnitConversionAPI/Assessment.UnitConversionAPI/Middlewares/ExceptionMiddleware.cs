@@ -10,11 +10,11 @@ namespace Assessment.UnitConversionAPI.Middlewares
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _requestDelegate;
-        
-        
+
+
         public ExceptionMiddleware(RequestDelegate requestDelegate)
         {
-            _requestDelegate = requestDelegate;                       
+            _requestDelegate = requestDelegate;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Assessment.UnitConversionAPI.Middlewares
 
             }
             catch (Exception ex)
-            {                                
+            {
                 await HandleExceptionAsync(context, ex);
             }
         }
@@ -46,18 +46,18 @@ namespace Assessment.UnitConversionAPI.Middlewares
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             var message = ex.Message;
+            bool IsBusinessMessage = false;
 
             if (ex.GetType() == typeof(UnauthorizedAccessException))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 message = $"Unauthorized - {message}";
             }
-
             else if (ex.GetType() == typeof(BusinessException))
             {
-                context.Response.StatusCode = 200;
+                IsBusinessMessage = true;
             }
-            else 
+            else
             {
                 message = "Internal Server Error";
             }
@@ -65,16 +65,18 @@ namespace Assessment.UnitConversionAPI.Middlewares
             return context.Response.WriteAsync(new ErrorLogDetails()
             {
                 StatusCode = context.Response.StatusCode,
-                Message = message
+                Message = message,
+                IsBusinessMessage = IsBusinessMessage
             }.ToString());
         }
 
     }
 
     internal class ErrorLogDetails
-    {       
+    {
         public int StatusCode { get; set; }
         public string? Message { get; set; }
+        public bool IsBusinessMessage { get; set; }
         public override string ToString()
         {
             return JsonSerializer.Serialize(this);
