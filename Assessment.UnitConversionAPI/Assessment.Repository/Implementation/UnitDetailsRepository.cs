@@ -38,7 +38,7 @@ namespace Assessment.Repository.Implementation
 
         public IEnumerable<UnitDetailsViewModel> GetAllAsync(int unitTypeId)
         {
-            var dbResponse = _dbContext.UnitDetails.Where(t => t.UnitTypeId == unitTypeId).Include(e => e.UnitType).ToList();
+            var dbResponse = _dbContext.UnitDetails.Where(t => t.UnitTypeId == unitTypeId || unitTypeId == 0).Include(e => e.UnitType).ToList();
             return _mapper.Map<List<UnitDetailsViewModel>>(dbResponse);
         }
 

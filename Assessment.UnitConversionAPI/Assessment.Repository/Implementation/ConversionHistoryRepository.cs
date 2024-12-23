@@ -31,11 +31,12 @@ namespace Assessment.Repository.Implementation
                 {
                     DerivedFactor = targetFactor.NumberOfBaseUnits / sourceFactor.NumberOfBaseUnits,
                     InputValue = details.InputValue,
-                    OutputValue = (targetFactor.NumberOfBaseUnits / sourceFactor.NumberOfBaseUnits) * details.InputValue,
+                    OutputValue = (targetFactor.NumberOfBaseUnits * details.InputValue) / (sourceFactor.NumberOfBaseUnits) ,
                     SourceUnitName = sourceFactor.UnitName,
                     TargetUnitName = targetFactor.UnitName,
                     UnitType = unitType.UnitTypeName,
-                    UserName = details.UserName
+                    UserName = details.UserName,
+                    RecordDate = DateTime.Now
                 };
                 await _dbContext.ConversionHistories.AddAsync(entity);
                 await _dbContext.SaveChangesAsync();
